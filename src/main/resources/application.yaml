@@ -1,5 +1,5 @@
 server:
-  port: 8846
+  port: 3002
 spring:
   datasource:
     driver-class-name: org.h2.Driver

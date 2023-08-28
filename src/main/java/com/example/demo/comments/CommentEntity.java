@@ -18,16 +18,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Entity(name="Comments")
+@Entity(name="comments")
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class CommentEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

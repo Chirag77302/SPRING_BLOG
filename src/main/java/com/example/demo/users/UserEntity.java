@@ -7,15 +7,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Entity(name="Users")
+@Entity(name = "users")
 @Getter
 @Setter
+@Builder
+@ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity {
 	@Id
@@ -38,5 +44,5 @@ public class UserEntity {
 	@Column(name = "name",nullable = false)
 	@Nullable
 	private String image;
-	
+
 }
