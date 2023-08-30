@@ -1,5 +1,7 @@
 package com.example.demo.users;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +13,19 @@ import lombok.experimental.var;
 public class UserService {
 	
 	private final UserRepository userRepository;
-
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	private final ModelMapper modelMapper;
+	private final PasswordEncoder passwordEncoder;
 	
+	public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.modelMapper = modelMapper;
+		this.passwordEncoder = passwordEncoder;
+	}
+
 	public UserEntity createUser(CreateUserRequest u) {
-		var user = UserEntity.builder().username(u.getUsername()).email(u.getEmail()).build();
-		return userRepository.save(user);					
+		UserEntity newuserEntity = modelMapper.map(u, UserEntity.class);
+		newuserEntity.setPassword(passwordEncoder.encode(u.getPassword()));
+		return userRepository.save(newuserEntity);					
 	}
 	
 	public UserEntity getuser(String username) {
@@ -31,6 +38,9 @@ public class UserService {
 	
 	public UserEntity loginUser(String username, String password) {
 		var user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		var passmatches = passwordEncoder.matches(password, user.getPassword());
+		System.out.println("passmatch check : "+passmatches);
+		if(!passmatches)throw new InvalidCredentialsException();
 		return user;
 	}
 	
@@ -43,4 +53,9 @@ public class UserService {
 		}
 	}
 	
+	public static class InvalidCredentialsException extends IllegalArgumentException {
+		public InvalidCredentialsException() {
+			super("Invalid username or password combination");
+		}
+	}
 }

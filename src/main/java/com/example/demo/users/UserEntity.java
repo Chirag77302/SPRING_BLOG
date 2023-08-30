@@ -13,13 +13,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity(name = "users")
+@Builder
 @Getter
 @Setter
-@Builder
-@ToString
+//@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,13 +34,17 @@ public class UserEntity {
 	
 	@Column(nullable = false)
 	@NonNull
+	private String password;
+	
+	@Column(nullable = false)
+	@NonNull
 	private String email;
 	
 	@Column(nullable = true)
 	@Nullable
 	private String bio;
 	
-	@Column(name = "name",nullable = false)
+	@Column(nullable = true)
 	@Nullable
 	private String image;
 
