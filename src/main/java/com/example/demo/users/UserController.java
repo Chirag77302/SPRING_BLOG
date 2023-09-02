@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.commons.dto.ErrorResponse;
+import com.example.demo.security.JWTService;
 import com.example.demo.users.UserService.UserNotFoundException;
 import com.example.demo.users.dtos.CreateUserLoginRequest;
 import com.example.demo.users.dtos.CreateUserRequest;
 import com.example.demo.users.dtos.UserResponse;
+
+import lombok.var;
 
 @RestController
 @RequestMapping("/users")
@@ -29,10 +32,12 @@ public class UserController {
 	
 	private final UserService userService;
 	private final ModelMapper modelMapper;
+	private final JWTService jwtService;
 	
-	public UserController(UserService userService, ModelMapper modelMapper) {
+	public UserController(UserService userService, ModelMapper modelMapper,JWTService jwtService) {
 		this.userService = userService;
 		this.modelMapper = modelMapper;
+		this.jwtService = jwtService;
 	}
 
 	@PostMapping("")
@@ -40,14 +45,18 @@ public class UserController {
 //		System.out.println("req body is"+req);
 		UserEntity su = userService.createUser(req);
 		URI savedusUri = URI.create("/users/" + su.getId());
-		return ResponseEntity.created(savedusUri).body(modelMapper.map(su, UserResponse.class));
+		var savedUserresponse = modelMapper.map(su, UserResponse.class);
+		savedUserresponse.setToken(jwtService.createJWT(su.getId()));
+		return ResponseEntity.created(savedusUri).body(savedUserresponse);
 	}
 	
 	@PostMapping("/login")
 	ResponseEntity<UserResponse> loginUser(@RequestBody CreateUserLoginRequest req) {
 //		System.out.println("entered the login route");
 		UserEntity savedUser = userService.loginUser(req.getUsername(), req.getPassword());
-		return ResponseEntity.ok(modelMapper.map(savedUser, UserResponse.class));
+		var useresponse = modelMapper.map(savedUser,UserResponse.class );
+		useresponse.setToken(jwtService.createJWT(savedUser.getId()));
+		return ResponseEntity.ok(useresponse);
 	}
 	
 	@ExceptionHandler({
