@@ -1,5 +1,6 @@
 package com.example.demo.articles;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.articles.dtos.CreateArticleRequest;
@@ -14,10 +15,12 @@ public class ArticleService {
 	
 	private final ArticleRepository articleRepository;
 	private final UserRepository userRepository;
+	private final ModelMapper modelMapper;
 	
-	public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
+	public ArticleService(ArticleRepository articleRepository, UserRepository userRepository,ModelMapper modelMapper) {
 		this.articleRepository = articleRepository;
 		this.userRepository = userRepository;
+		this.modelMapper = modelMapper;
 	}
 	
 	public Iterable<ArticleEntity> getallArticles(){
@@ -30,16 +33,15 @@ public class ArticleService {
 			return article;
 	}
 	
+	public ArticleEntity getarticlebyid(Long id) {
+		return articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException(id));
+	}
+	
 	public ArticleEntity createArticle(CreateArticleRequest a, Long authorid) {
 		var author = userRepository.findById(authorid).orElseThrow(() -> new UserService.UserNotFoundException(authorid));
-		return articleRepository.save(ArticleEntity.builder()
-				.title(a.getTitle())
-				.slug(a.getTitle().toLowerCase().replaceAll("\\s+", "-"))
-				.body(a.getBody())
-				.subtitle(a.getSubtitle())
-				.author(author)
-				.build()
-				);
+		ArticleEntity articleEntity = modelMapper.map(a, ArticleEntity.class);
+		articleEntity.setAuthor(author);
+		return articleRepository.save(articleEntity);
 	}
 	
 	public ArticleEntity updateArticle(Long articleId, UpdateArticleRequest a) {

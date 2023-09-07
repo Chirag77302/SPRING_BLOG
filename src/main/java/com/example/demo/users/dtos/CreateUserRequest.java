@@ -1,14 +1,8 @@
 package com.example.demo.users.dtos;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-//@Data
+
 public class CreateUserRequest {
 	@NotNull
 	private String username;

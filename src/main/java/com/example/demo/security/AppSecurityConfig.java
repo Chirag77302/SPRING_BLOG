@@ -36,7 +36,7 @@ public class AppSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		RequestMatcher requestMatcher1 = new AntPathRequestMatcher("/articles/*", "GET");
+		RequestMatcher requestMatcher1 = new AntPathRequestMatcher("/articles", "GET");
 		RequestMatcher requestMatcher2 = new AntPathRequestMatcher("/users", "POST");
 		RequestMatcher requestMatcher3 = new AntPathRequestMatcher("/users/login", "POST");
 		http.csrf(csrf -> csrf.disable())

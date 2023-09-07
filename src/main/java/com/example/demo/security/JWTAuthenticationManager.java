@@ -30,7 +30,7 @@ public class JWTAuthenticationManager implements AuthenticationManager {
 			var userentity = userService.getUser(userId);
 			jwtAuthentication.userEntity = userentity;
 			jwtAuthentication.setAuthenticated(true);
-			SecurityContextHolder.getContext().setAuthentication(jwtAuthentication);
+//			SecurityContextHolder.getContext().setAuthentication(jwtAuthentication);
 			return jwtAuthentication;
 		}
 		throw new IllegalAccessError("Cannot authenticate with non-JWT authentication");
