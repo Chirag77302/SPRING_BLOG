@@ -59,7 +59,7 @@ public class ArticleService {
 		return article;
 	}
 
-	static class ArticleNotFoundException extends IllegalArgumentException{
+	public static class ArticleNotFoundException extends IllegalArgumentException{
 		public ArticleNotFoundException(String slug) {
 			super("Article with slug : " + slug + " not found");
 			// TODO Auto-generated constructor stub

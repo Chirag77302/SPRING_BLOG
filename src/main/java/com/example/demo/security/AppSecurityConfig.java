@@ -39,9 +39,10 @@ public class AppSecurityConfig {
 		RequestMatcher requestMatcher1 = new AntPathRequestMatcher("/articles", "GET");
 		RequestMatcher requestMatcher2 = new AntPathRequestMatcher("/users", "POST");
 		RequestMatcher requestMatcher3 = new AntPathRequestMatcher("/users/login", "POST");
+		RequestMatcher requestMatcher4 = new AntPathRequestMatcher("/article/*","GET");
 		http.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
-					.requestMatchers(requestMatcher1,requestMatcher2,requestMatcher3).permitAll()
+					.requestMatchers(requestMatcher1,requestMatcher2,requestMatcher3,requestMatcher4).permitAll()
 					.anyRequest().authenticated());
 		
 		http.addFilterBefore(jwtAuthenticationFilter(),AnonymousAuthenticationFilter.class);

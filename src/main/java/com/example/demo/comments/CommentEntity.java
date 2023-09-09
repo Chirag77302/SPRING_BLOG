@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.hibernate.resource.beans.internal.FallbackBeanInstanceProducer;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -45,6 +46,8 @@ public class CommentEntity {
 	private String body;
 	
 	@CreatedDate
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Date createdAt;
 	
 	@ManyToOne
@@ -54,7 +57,4 @@ public class CommentEntity {
 	@ManyToOne
 	@JoinColumn(name="authorId",nullable = false)
 	private UserEntity user;
-	
-	
-	
 }

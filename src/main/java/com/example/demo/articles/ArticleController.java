@@ -34,7 +34,6 @@ public class ArticleController {
 	@GetMapping("")
     Iterable<ArticleEntity> getArticles() {
 		var allarticles = articleService.getallArticles();
-//		System.out.println(allarticles);
 		return allarticles;
     }
 
@@ -44,11 +43,6 @@ public class ArticleController {
         var articleresponse = modelMapper.map(article, ArticleResponse.class);
         return ResponseEntity.ok(articleresponse);
     }
-    
-//    @PostMapping("")
-//    String createArticle(@AuthenticationPrincipal UserEntity user) {
-//        return "create article called by " + user.getUsername();
-//    }
     
     @PostMapping("")
 	 ResponseEntity<ArticleResponse> createArticle(@AuthenticationPrincipal UserEntity user,@RequestBody CreateArticleRequest art) {
